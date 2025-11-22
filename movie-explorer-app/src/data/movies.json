@@ -1,0 +1,184 @@
+{
+    "movies": [
+        {
+            "id": 1,
+            "title": "Inception",
+            "year": 2010,
+            "genre": [
+                "Sci-Fi",
+                "Action"
+            ],
+            "rating": 8.8,
+            "poster": "https://picsum.photos/200/300?random=1",
+            "description": "A thief who enters people's dreams to steal secrets must perform inception on a business magnate's son."
+        },
+        {
+            "id": 2,
+            "title": "The Dark Knight",
+            "year": 2008,
+            "genre": [
+                "Action",
+                "Drama"
+            ],
+            "rating": 9.0,
+            "poster": "https://picsum.photos/200/300?random=2",
+            "description": "Batman faces off against the Joker, a criminal mastermind bent onplunging Gotham into chaos."
+        },
+        {
+            "id": 3,
+            "title": "Interstellar",
+            "year": 2014,
+            "genre": [
+                "Sci-Fi",
+                "Drama"
+            ],
+            "rating": 8.6,
+            "poster": "https://picsum.photos/200/300?random=3",
+            "description": "A group of explorers travel through a wormhole in search of a new home for humanity."
+        },
+        {
+            "id": 4,
+            "title": "The Matrix",
+            "year": 1999,
+            "genre": [
+                "Sci-Fi",
+                "Action"
+            ],
+            "rating": 8.7,
+            "poster": "https://picsum.photos/200/300?random=4",
+            "description": "A hacker discovers the true nature of reality and begins a rebellion against its controllers."
+        },
+        {
+            "id": 5,
+            "title": "Parasite",
+            "year": 2019,
+            "genre": [
+                "Drama",
+                "Thriller"
+            ],
+            "rating": 8.6,
+            "poster": "https://picsum.photos/200/300?random=5",
+            "description": "A poor family infiltrates a wealthy household, leading to unexpected consequences."
+        },
+        {
+            "id": 6,
+            "title": "Avengers: Endgame",
+            "year": 2019,
+            "genre": [
+                "Action",
+                "Sci-Fi"
+            ],
+            "rating": 8.4,
+            "poster": "https://picsum.photos/200/300?random=6",
+            "description": "The Avengers assemble one final time to reverse the catastrophicevents brought by Thanos."
+        },
+        {
+            "id": 7,
+            "title": "La La Land",
+            "year": 2016,
+            "genre": [
+                "Romance",
+                "Drama"
+            ],
+            "rating": 8.0,
+            "poster": "https://picsum.photos/200/300?random=7",
+            "description": "A jazz musician and an aspiring actress struggle to balance love andartistic ambition."
+        },
+        {
+            "id": 8,
+            "title": "Joker",
+            "year": 2019,
+            "genre": [
+                "Drama",
+                "Crime"
+            ],
+            "rating": 8.4,
+            "poster": "httpsum.photos/200/300?random=8",
+            "description": "A mentally troubled comedian's descent into darkness leads him tobecome Gotham's criminal mastermind."
+        },
+        {
+            "id": 9,
+            "title": "Whiplash",
+            "year": 2014,
+            "genre": [
+                "Drama",
+                "Music"
+            ],
+            "rating": 8.5,
+            "poster": "https://picsum.photos/200/300?random=9",
+            "description": "A young drummer's ambitions collide with the brutal teaching style ofhis instructor."
+        },
+        {
+            "id": 10,
+            "title": "Finding Nemo",
+            "year": 2003,
+            "genre": [
+                "Animation",
+                "Adventure"
+            ],
+            "rating": 8.1,
+            "poster": "https://picsum.photos/200/300?random=10",
+            "description": "A timid clownfish sets out on an epic journey to rescue his capturedson."
+        },
+        {
+            "id": 11,
+            "title": "Toy Story",
+            "year": 1995,
+            "genre": [
+                "Animation",
+                "Family"
+            ],
+            "rating": 8.3,
+            "poster": "https://picsum.photos/200/300?random=11",
+            "description": "A group of toys come to life when their owner is not watching, leadingto heartfelt adventures."
+        },
+        {
+            "id": 12,
+            "title": "The Social Network",
+            "year": 2010,
+            "genre": [
+                "Drama",
+                "Biography"
+            ],
+            "rating": 7.8,
+            "poster": "https://picsum.photos/200/300?random=12",
+            "description": "The story of Facebook’s creation and the conflicts that followed."
+        },
+        {
+            "id": 13,
+            "title": "Shutter Island",
+            "year": 2010,
+            "genre": [
+                "Thriller",
+                "Mystery"
+            ],
+            "rating": 8.1,
+            "poster": "https://picsum.photos/200/300?random=13",
+            "description": "Two U.S. Marshals investigate a psychiatric facility and uncovershocking secrets."
+        },
+        {
+            "id": 14,
+            "title": "Titanic",
+            "year": 1997,
+            "genre": [
+                "Romance",
+                "Drama"
+            ],
+            "rating": 7.9,
+            "poster": "https://picsum.photos/200/300?random=14",
+            "description": "A wealthy woman and a poor artist fall in love aboard the ill-fatedRMS Titanic."
+        },
+        {
+            "id": 15,
+            "title": "Gladiator",
+            "year": 2000,
+            "genre": [
+                "Action",
+                "Drama"
+            ],
+            "rating": 8.5,
+            "poster": "https://picsum.photos/200/300?random=15",
+            "description": "A betrayed Roman general seeks revenge as a gladiator."
+        }
+    ]
+}
