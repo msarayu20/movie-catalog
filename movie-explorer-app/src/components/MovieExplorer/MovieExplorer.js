@@ -4,7 +4,7 @@ import { useDebounce, useLocalStorage, useURLParams, useKeyboardShortcuts } from
 import { SearchBar } from '../SearchBar/SearchBar';
 import { FilterControls } from '../FilterControls/FilterControls';
 import { MovieGrid } from '../MovieGrid/MovieGrid';
-import { MovieModal } from '../MovieModal/MovieModal';
+import { MovieDetailsModal } from '../MovieDetailsModal/MovieDetailsModal';
 import { Header } from '../Header/Header';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 
@@ -311,14 +311,14 @@ export const MovieExplorer = () => {
         </div>
       </main>
       
-      {/* Movie Detail Modal */}
+      {/* Professional Movie Details Modal */}
       {selectedMovie && (
-        <MovieModal
+        <MovieDetailsModal
           movie={selectedMovie}
           isOpen={isModalOpen}
           onClose={handleModalClose}
           isFavorite={favorites.includes(selectedMovie.id)}
-          onToggleFavorite={handleToggleFavorite}
+          onToggleFavorite={() => handleToggleFavorite(selectedMovie.id)}
         />
       )}
       
