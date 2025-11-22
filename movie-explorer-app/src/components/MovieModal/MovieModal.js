@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { formatRating } from '../../services/movieService';
-import './MovieModal.css';
 
 /**
  * MovieModal Component

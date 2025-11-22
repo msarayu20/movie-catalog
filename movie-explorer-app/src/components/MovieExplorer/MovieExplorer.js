@@ -7,7 +7,6 @@ import { MovieGrid } from '../MovieGrid/MovieGrid';
 import { MovieModal } from '../MovieModal/MovieModal';
 import { Header } from '../Header/Header';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
-import './MovieExplorer.css';
 
 /**
  * MovieExplorer - Main Application Component
@@ -218,14 +217,14 @@ export const MovieExplorer = () => {
   
   if (error) {
     return (
-      <div className="movie-explorer">
+      <div className="min-h-screen bg-dark-900">
         <Header />
-        <div className="error-container">
-          <div className="error-message">
-            <h2>Oops! Something went wrong</h2>
-            <p>{error}</p>
+        <div className="flex items-center justify-center min-h-[70vh] px-8">
+          <div className="text-center max-w-md glass rounded-3xl p-8">
+            <h2 className="text-red-500 text-3xl font-bold mb-4">Oops! Something went wrong</h2>
+            <p className="text-gray-400 text-lg mb-8 leading-relaxed">{error}</p>
             <button 
-              className="btn btn-primary"
+              className="button-primary"
               onClick={() => window.location.reload()}
             >
               Try Again
@@ -240,11 +239,11 @@ export const MovieExplorer = () => {
   
   if (loading) {
     return (
-      <div className="movie-explorer">
+      <div className="min-h-screen bg-dark-900">
         <Header />
-        <div className="loading-container">
+        <div className="flex flex-col items-center justify-center min-h-[70vh] space-y-8">
           <LoadingSpinner />
-          <p>Loading amazing movies for you...</p>
+          <p className="text-gray-400 text-lg font-medium opacity-0 animate-fade-in">Loading amazing movies for you...</p>
         </div>
       </div>
     );
@@ -253,7 +252,7 @@ export const MovieExplorer = () => {
   // ========== MAIN RENDER ==========
   
   return (
-    <div className="movie-explorer">
+    <div className="min-h-screen bg-dark-900 relative">
       {/* Application Header */}
       <Header 
         movieCount={filteredMovies.length}
@@ -261,8 +260,8 @@ export const MovieExplorer = () => {
       />
       
       {/* Search and Filter Controls */}
-      <div className="controls-section">
-        <div className="container">
+      <div className="sticky top-0 z-50 glass backdrop-blur-xl border-b border-white/10 py-8 animate-slide-up">
+        <div className="max-w-7xl mx-auto px-6">
           <SearchBar
             value={searchQuery}
             onChange={handleSearchChange}
@@ -283,15 +282,15 @@ export const MovieExplorer = () => {
       </div>
       
       {/* Movie Grid */}
-      <main className="main-content">
-        <div className="container">
+      <main className="py-12 min-h-[60vh]">
+        <div className="max-w-7xl mx-auto px-6">
           {filteredMovies.length === 0 ? (
-            <div className="no-results">
-              <div className="no-results-content">
-                <h2>No movies found</h2>
-                <p>Try adjusting your search criteria or filters</p>
+            <div className="flex items-center justify-center min-h-[50vh] px-8">
+              <div className="text-center max-w-md opacity-0 animate-fade-in">
+                <h2 className="text-3xl font-semibold text-white mb-4">No movies found</h2>
+                <p className="text-gray-400 text-lg mb-8 leading-relaxed">Try adjusting your search criteria or filters</p>
                 <button 
-                  className="btn btn-secondary"
+                  className="glass-button px-6 py-3 rounded-xl font-medium"
                   onClick={handleClearFilters}
                 >
                   Clear Filters
@@ -323,13 +322,10 @@ export const MovieExplorer = () => {
         />
       )}
       
-      {/* Floating Stats (for development - can be removed in production) */}
+      {/* Development Debug Stats */}
       {process.env.NODE_ENV === 'development' && (
-        <div className="debug-stats">
-          <small>
-            Showing {displayedMovies.length} of {filteredMovies.length} movies
-            | Total: {movies.length} | Favorites: {favorites.length}
-          </small>
+        <div className="fixed bottom-4 right-4 glass rounded-lg px-3 py-2 text-xs font-mono text-gray-400 opacity-70 hover:opacity-100 transition-opacity z-50">
+          Showing {displayedMovies.length} of {filteredMovies.length} movies | Total: {movies.length} | Favorites: {favorites.length}
         </div>
       )}
     </div>
