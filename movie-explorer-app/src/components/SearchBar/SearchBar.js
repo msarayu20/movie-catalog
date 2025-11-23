@@ -209,8 +209,8 @@ export const SearchBar = ({
     };
 
     return (
-        <div className="relative max-w-md mx-auto mb-4">
-            <div className={`relative transition-all duration-300 ${isFocused ? 'scale-105' : ''}`}>
+        <div className="relative w-full">
+            <div className={`relative transition-all duration-300 ${isFocused ? 'scale-[1.02]' : ''}`}>
                 {/* Search Icon */}
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg
@@ -239,10 +239,10 @@ export const SearchBar = ({
                     onBlur={handleInputBlur}
                     onKeyDown={handleKeyDown}
                     placeholder={placeholder}
-                    className="w-full pl-10 pr-10 py-2 bg-white/5 backdrop-blur-sm border border-white/20 
+                    className="w-full pl-10 pr-10 py-2.5 bg-[#22252f] border border-gray-600 
                                rounded-lg text-white placeholder-gray-400 text-sm
-                               focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500
-                               hover:border-white/30 transition-all duration-300"
+                               focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+                               hover:border-gray-500 transition-all duration-300"
                     aria-label="Search movies"
                     autoComplete="off"
                     spellCheck="false"
@@ -275,7 +275,7 @@ export const SearchBar = ({
                 {/* Keyboard Shortcut Hint */}
                 {!isFocused && !searchQuery && (
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                        <kbd className="px-1.5 py-0.5 text-xs font-mono bg-white/10 border border-white/20 rounded text-gray-400">
+                        <kbd className="px-2 py-1 text-xs font-mono bg-gray-700 border border-gray-600 rounded text-gray-300">
                             /
                         </kbd>
                     </div>
@@ -284,11 +284,10 @@ export const SearchBar = ({
 
             {/* Enhanced Suggestions Dropdown */}
             {showSuggestions && suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-dark-900/95 backdrop-blur-md 
-                                border border-white/10 rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto">
-                    <div className="p-2 border-b border-white/10">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-[#1a1d29] border border-gray-700/50 rounded-lg shadow-2xl z-50 max-h-64 overflow-y-auto">
+                    <div className="p-3 border-b border-gray-700/50">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs text-gray-400 font-medium">Smart Suggestions</span>
+                            <span className="text-xs text-gray-400 font-semibold uppercase tracking-wide">Suggestions</span>
                             <span className="text-xs text-gray-500">{suggestions.length} found</span>
                         </div>
                     </div>
@@ -302,7 +301,7 @@ export const SearchBar = ({
                                     className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${
                                         index === selectedSuggestionIndex 
                                             ? 'bg-primary-500/20 text-white ring-1 ring-primary-500/30' 
-                                            : 'hover:bg-white/5 text-gray-300'
+                                            : 'hover:bg-gray-800/50 text-gray-300'
                                     }`}
                                     onClick={() => handleSuggestionClick(movie)}
                                     onMouseEnter={() => setSelectedSuggestionIndex(index)}
@@ -347,7 +346,7 @@ export const SearchBar = ({
                             );
                         })}
                     </div>
-                    <div className="p-2 border-t border-white/10">
+                    <div className="p-2 border-t border-gray-700/50 bg-[#22252f]">
                         <div className="text-xs text-gray-500 text-center">
                             Use ↑↓ to navigate, ↵ to select, ESC to close
                         </div>

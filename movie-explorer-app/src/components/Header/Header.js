@@ -1,20 +1,33 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { SearchBar } from '../SearchBar/SearchBar';
 import './Header.css';
 
 /**
- * Header Component
- * 
- * A polished application header featuring:
- * - Elegant branding with gradient text
- * - Real-time movie count display
- * - Responsive design with Tailwind CSS
- * - Smooth animations
+ * Header Component with integrated search and navigation
  * 
  * @param {object} props - Component properties
  * @param {number} props.movieCount - Number of filtered movies
  * @param {number} props.totalMovies - Total number of movies
+ * @param {string} props.searchQuery - Current search query
+ * @param {function} props.onSearchChange - Search change handler
+ * @param {Array} props.movies - All movies for search suggestions
+ * @param {function} props.onMovieSelect - Movie selection handler
  */
-export const Header = ({ movieCount, totalMovies }) => {
+export const Header = ({ 
+  movieCount, 
+  totalMovies, 
+  searchQuery, 
+  onSearchChange, 
+  movies, 
+  onMovieSelect 
+}) => {
+  const location = useLocation();
+  
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+  
   return (
     <header className="app-header relative overflow-hidden">
       {/* Animated Background Gradient */}
@@ -35,31 +48,60 @@ export const Header = ({ movieCount, totalMovies }) => {
         <div className="header-content">
           {/* Brand Section */}
           <div className="brand-section">
-            <div className="logo">
-              <span className="logo-icon">🎬</span>
-              <h1 className="brand-title">
-                Movie<span className="brand-accent">Explorer</span>
-              </h1>
-            </div>
+            <Link to="/" className="logo-link">
+              <div className="logo">
+                <span className="logo-icon">🎬</span>
+                <h1 className="brand-title">
+                  Movie<span className="brand-accent">Explorer</span>
+                </h1>
+              </div>
+            </Link>
             <p className="brand-subtitle">
               Discover your next favorite film
             </p>
           </div>
           
-          {/* Stats Section */}
-          {movieCount !== undefined && totalMovies !== undefined && (
-            <div className="stats-section">
-              <div className="stat-item">
-                <span className="stat-label">Showing</span>
-                <span className="stat-value">{movieCount.toLocaleString()}</span>
-              </div>
-              <div className="stat-divider">of</div>
-              <div className="stat-item">
-                <span className="stat-label">Total</span>
-                <span className="stat-value">{totalMovies.toLocaleString()}</span>
-              </div>
-            </div>
-          )}
+          {/* Navigation Links */}
+          <nav className="nav-links">
+            <Link 
+              to="/" 
+              className={`nav-link ${isActive('/') ? 'active' : ''}`}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+              </svg>
+              <span>Home</span>
+            </Link>
+            <Link 
+              to="/all-movies" 
+              className={`nav-link ${isActive('/all-movies') ? 'active' : ''}`}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+              </svg>
+              <span>All Movies</span>
+            </Link>
+            <Link 
+              to="/favorites" 
+              className={`nav-link ${isActive('/favorites') ? 'active' : ''}`}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+              </svg>
+              <span>Favorites</span>
+            </Link>
+          </nav>
+          
+          {/* Search Bar in Right Corner - Always Visible */}
+          <div className="search-section">
+            <SearchBar
+              value={searchQuery || ''}
+              onChange={onSearchChange || (() => {})}
+              movies={movies || []}
+              onMovieSelect={onMovieSelect || (() => {})}
+              placeholder="Search movies..."
+            />
+          </div>
         </div>
         
         {/* Decorative Background Elements with Tailwind CSS */}

@@ -329,14 +329,14 @@ export const MovieExplorer = () => {
   
   if (error) {
     return (
-      <div className="min-h-screen bg-dark-900">
+      <div className="min-h-screen bg-[#0f1014]">
         <Header />
         <div className="flex items-center justify-center min-h-[70vh] px-8">
-          <div className="text-center max-w-md glass rounded-3xl p-8">
+          <div className="text-center max-w-md bg-[#1a1d29] rounded-2xl p-8 border border-gray-700/50">
             <h2 className="text-red-500 text-3xl font-bold mb-4">Oops! Something went wrong</h2>
             <p className="text-gray-400 text-lg mb-8 leading-relaxed">{error}</p>
             <button 
-              className="button-primary"
+              className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg font-medium transition-colors"
               onClick={() => window.location.reload()}
             >
               Try Again
@@ -351,11 +351,11 @@ export const MovieExplorer = () => {
   
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark-900">
+      <div className="min-h-screen bg-[#0f1014]">
         <Header />
         <div className="flex flex-col items-center justify-center min-h-[70vh] space-y-8">
           <LoadingSpinner />
-          <p className="text-gray-400 text-lg font-medium opacity-0 animate-fade-in">Loading amazing movies for you...</p>
+          <p className="text-gray-400 text-lg font-medium">Loading amazing movies for you...</p>
         </div>
       </div>
     );
@@ -364,24 +364,20 @@ export const MovieExplorer = () => {
   // ========== MAIN RENDER ==========
   
   return (
-    <div className="min-h-screen bg-dark-900 relative">
-      {/* Application Header */}
+    <div className="min-h-screen bg-[#0f1014]">
+      {/* Application Header with Search */}
       <Header 
         movieCount={filteredMovies.length}
         totalMovies={movies.length}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        movies={movies}
+        onMovieSelect={handleMovieSelect}
       />
       
-      {/* Search and Filter Controls */}
-      <div className="sticky top-0 z-50 glass backdrop-blur-xl border-b border-white/10 py-8 animate-slide-up">
-        <div className="max-w-7xl mx-auto px-6">
-          <SearchBar
-            value={searchQuery}
-            onChange={handleSearchChange}
-            movies={movies}
-            onMovieSelect={handleMovieSelect}
-            placeholder="Search movies... (Press '/' to focus)"
-          />
-          
+      {/* Filter Controls */}
+      <div className="sticky top-0 z-40 bg-[#1a1d29] border-b border-gray-700/50 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FilterControls
             genres={availableGenres}
             selectedGenre={selectedGenre}
@@ -399,15 +395,15 @@ export const MovieExplorer = () => {
       </div>
       
       {/* Movie Grid */}
-      <main className="py-12 min-h-[60vh]">
-        <div className="max-w-7xl mx-auto px-6">
+      <main className="py-8 min-h-[60vh]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredMovies.length === 0 ? (
             <div className="flex items-center justify-center min-h-[50vh] px-8">
-              <div className="text-center max-w-md opacity-0 animate-fade-in">
+              <div className="text-center max-w-md">
                 <h2 className="text-3xl font-semibold text-white mb-4">No movies found</h2>
                 <p className="text-gray-400 text-lg mb-8 leading-relaxed">Try adjusting your search criteria or filters</p>
                 <button 
-                  className="glass-button px-6 py-3 rounded-xl font-medium"
+                  className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg font-medium transition-colors"
                   onClick={handleClearFilters}
                 >
                   Clear Filters
@@ -462,13 +458,6 @@ export const MovieExplorer = () => {
         isOpen={showShareURL}
         onClose={handleCloseShareURL}
       />
-      
-      {/* Development Debug Stats */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed bottom-4 right-4 glass rounded-lg px-3 py-2 text-xs font-mono text-gray-400 opacity-70 hover:opacity-100 transition-opacity z-50">
-          Showing {displayedMovies.length} of {filteredMovies.length} movies | Total: {movies.length} | Favorites: {favorites.length}
-        </div>
-      )}
     </div>
   );
 };

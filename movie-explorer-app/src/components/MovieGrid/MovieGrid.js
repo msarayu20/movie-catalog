@@ -45,11 +45,10 @@ export const MovieGrid = ({
 
   return (
     <div className="w-full">
-      <div className={`${
-        viewMode === 'grid' 
-          ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' 
+      <div className={`${viewMode === 'grid'
+          ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
           : 'flex flex-col space-y-4'
-      } animate-fade-in`}>
+        } animate-fade-in`}>
         {movies.map((movie, index) => (
           <MovieCard
             key={movie.id}
@@ -65,7 +64,7 @@ export const MovieGrid = ({
 
       {/* Load More Trigger - Only for infinite scroll mode */}
       {hasMore && paginationMode === 'infinite' && (
-        <div 
+        <div
           ref={loadMoreRef}
           className="flex flex-col items-center justify-center py-12"
           aria-hidden="true"
@@ -75,15 +74,6 @@ export const MovieGrid = ({
               <div className="absolute inset-0 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
             <span className="text-gray-400 text-sm">Loading more movies...</span>
-          </div>
-        </div>
-      )}
-
-      {/* End of Results - Only for infinite scroll mode */}
-      {!hasMore && movies.length > 0 && paginationMode === 'infinite' && (
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="bg-glass backdrop-blur-sm rounded-2xl border border-white/10 shadow-glass px-6 py-4">
-            <p className="text-gray-300 text-sm">You've seen all {movies.length} movies! 🎬</p>
           </div>
         </div>
       )}

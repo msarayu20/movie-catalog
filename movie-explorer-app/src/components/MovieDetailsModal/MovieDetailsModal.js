@@ -68,30 +68,30 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-fade-in"
+        className="absolute inset-0 bg-black/90 backdrop-blur-md"
         onClick={onClose}
       ></div>
       
       {/* Modal */}
-      <div className="relative w-full max-w-4xl max-h-[90vh] bg-gradient-to-br from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl animate-scale-in">
+      <div className="relative w-full max-w-5xl max-h-[90vh] bg-[#1a1d29] rounded-2xl overflow-hidden shadow-2xl animate-scale-in border border-gray-700/50">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 z-20 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 group"
+          className="absolute top-4 right-4 z-20 w-10 h-10 bg-gray-800/80 hover:bg-gray-700 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
         >
-          <svg className="w-5 h-5 text-gray-300 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg className="w-5 h-5 text-gray-300 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
         {/* Content */}
         <div className="flex flex-col lg:flex-row overflow-hidden">
           {/* Movie Poster Section */}
-          <div className="lg:w-2/5 relative">
-            <div className="relative h-64 lg:h-full min-h-[400px]">
+          <div className="lg:w-2/5 relative bg-gray-900">
+            <div className="relative h-80 lg:h-full">
               {/* Background Image */}
               <img
                 src={movie.poster}
@@ -101,24 +101,23 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
               />
               
               {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
               
-              {/* Floating Elements */}
+              {/* Year Badge */}
+              <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-sm px-3 py-1.5 rounded text-white text-sm font-semibold">
+                {movie.year}
+              </div>
+              
+              {/* Rating and Favorite at Bottom */}
               <div className="absolute bottom-6 left-6 right-6">
-                {/* Rating Badge */}
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className={`px-4 py-2 bg-black/60 backdrop-blur-sm rounded-xl border border-white/20`}>
-                    <div className="flex items-center space-x-2">
-                      <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                      </svg>
-                      <span className={`text-lg font-bold ${getRatingColor(movie.rating)}`}>
-                        {movie.rating.toFixed(1)}/10
-                      </span>
-                      <span className="text-sm text-gray-300">
-                        {getRatingLabel(movie.rating)}
-                      </span>
-                    </div>
+                <div className="flex items-center justify-between">
+                  {/* Rating Badge */}
+                  <div className="flex items-center space-x-2 bg-black/80 backdrop-blur-sm rounded-lg px-4 py-2.5">
+                    <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                    </svg>
+                    <span className="text-yellow-400 font-bold text-lg">{movie.rating.toFixed(1)}</span>
+                    <span className="text-gray-300 text-sm">/10</span>
                   </div>
                   
                   {/* Favorite Button */}
@@ -127,22 +126,14 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                       e.stopPropagation();
                       onToggleFavorite();
                     }}
-                    className={`w-12 h-12 rounded-xl backdrop-blur-sm border transition-all duration-200 hover:scale-110 ${
+                    className={`w-11 h-11 rounded-full backdrop-blur-sm transition-all duration-200 hover:scale-110 ${
                       isFavorite 
-                        ? 'bg-red-500/20 border-red-500/50 text-red-400' 
-                        : 'bg-black/60 border-white/20 text-gray-300 hover:text-red-400'
+                        ? 'bg-red-500 text-white' 
+                        : 'bg-black/80 text-gray-300 hover:bg-red-500 hover:text-white'
                     }`}
                   >
-                    <svg
-                      className="w-6 h-6 mx-auto"
-                      viewBox="0 0 24 24"
-                      fill={isFavorite ? "currentColor" : "none"}
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    <svg className="w-5 h-5 mx-auto" viewBox="0 0 24 24" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                     </svg>
                   </button>
                 </div>
@@ -151,58 +142,59 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
           </div>
 
           {/* Movie Details Section */}
-          <div className="lg:w-3/5 flex flex-col">
+          <div className="lg:w-3/5 flex flex-col bg-[#1a1d29]">
             {/* Header */}
-            <div className="p-8 pb-4">
-              <h1 className="text-3xl lg:text-4xl font-bold text-white mb-3 leading-tight">
+            <div className="p-6 lg:p-8">
+              <h1 className="text-2xl lg:text-3xl font-bold text-white mb-4 leading-tight">
                 {movie.title}
               </h1>
               
-              {/* Meta Information */}
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300 mb-6">
-                <span className="flex items-center space-x-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"></path>
-                  </svg>
-                  <span>{movie.year}</span>
-                </span>
-                
-                {movie.duration && (
-                  <span className="flex items-center space-x-1">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"></path>
-                    </svg>
-                    <span>{formatDuration(movie.duration)}</span>
-                  </span>
-                )}
-                
-                {movie.director && (
-                  <span className="flex items-center space-x-1">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path>
-                    </svg>
-                    <span>Directed by {movie.director}</span>
-                  </span>
-                )}
-              </div>
-
               {/* Genres */}
               {movie.genre && (
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2 mb-4">
                   {movie.genre.map((genre, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-full text-sm text-purple-300 font-medium"
+                      className="px-3 py-1 bg-primary-500/20 border border-primary-500/30 rounded-full text-sm text-primary-300 font-medium"
                     >
                       {genre}
                     </span>
                   ))}
                 </div>
               )}
+              
+              {/* Meta Information */}
+              <div className="flex flex-wrap items-center gap-3 text-sm text-gray-400 mb-6">
+                <span className="flex items-center space-x-1.5">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"></path>
+                  </svg>
+                  <span className="text-gray-300">{movie.year}</span>
+                </span>
+                
+                {movie.duration && (
+                  <>
+                    <span className="text-gray-600">•</span>
+                    <span className="flex items-center space-x-1.5">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"></path>
+                      </svg>
+                      <span className="text-gray-300">{formatDuration(movie.duration)}</span>
+                    </span>
+                  </>
+                )}
+                
+                {movie.director && (
+                  <>
+                    <span className="text-gray-600">•</span>
+                    <span className="text-gray-300">{movie.director}</span>
+                  </>
+                )}
+              </div>
             </div>
 
             {/* Tab Navigation */}
-            <div className="px-8 border-b border-white/10">
+            <div className="px-6 lg:px-8 border-b border-gray-700/50">
               <div className="flex space-x-6">
                 {['overview', 'details', 'cast'].map((tab) => (
                   <button
@@ -210,7 +202,7 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                     onClick={() => setActiveTab(tab)}
                     className={`py-3 px-1 text-sm font-medium border-b-2 transition-all duration-200 capitalize ${
                       activeTab === tab
-                        ? 'border-purple-500 text-purple-400'
+                        ? 'border-primary-500 text-primary-400'
                         : 'border-transparent text-gray-400 hover:text-gray-300'
                     }`}
                   >
@@ -221,7 +213,7 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
             </div>
 
             {/* Tab Content */}
-            <div className="flex-1 p-8 overflow-y-auto">
+            <div className="flex-1 p-6 lg:p-8 overflow-y-auto">
               {activeTab === 'overview' && (
                 <div className="space-y-6">
                   {movie.description && (

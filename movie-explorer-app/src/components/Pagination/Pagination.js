@@ -70,12 +70,12 @@ export const Pagination = ({
       disabled={isDisabled}
       className={`
         min-w-[40px] h-10 px-3 rounded-lg font-medium text-sm transition-all duration-200
-        focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:ring-offset-2 focus:ring-offset-dark-900
+        focus:outline-none focus:ring-2 focus:ring-primary-500/50
         ${isCurrent 
           ? 'bg-primary-500 text-white shadow-lg transform scale-105' 
           : isDisabled
-            ? 'bg-gray-700/50 text-gray-500 cursor-not-allowed'
-            : 'bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10 hover:text-white hover:border-white/20 hover:transform hover:scale-105'
+            ? 'bg-gray-800 text-gray-600 cursor-not-allowed'
+            : 'bg-[#1a1d29] text-gray-300 border border-gray-600 hover:bg-gray-700 hover:text-white hover:border-gray-500 hover:transform hover:scale-105'
         }
       `}
       aria-label={isCurrent ? `Current page ${page}` : `Go to page ${page}`}

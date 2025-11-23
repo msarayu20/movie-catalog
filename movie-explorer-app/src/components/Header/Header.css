@@ -17,6 +17,57 @@
   position: relative;
   z-index: 10;
   max-width: 100%;
+  gap: 2rem;
+}
+
+/* Logo Link */
+.logo-link {
+  text-decoration: none;
+  display: block;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md, 1rem);
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs, 0.5rem);
+  padding: var(--space-sm, 0.5rem) var(--space-md, 1rem);
+  color: var(--text-secondary, #9ca3af);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: var(--font-size-sm, 0.875rem);
+  border-radius: var(--radius-lg, 0.75rem);
+  transition: all 0.3s var(--ease-out-cubic, cubic-bezier(0.33, 1, 0.68, 1));
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--text-primary, #f9fafb);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link.active {
+  color: var(--text-primary, #f9fafb);
+  background: var(--primary-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+}
+
+.nav-link svg {
+  flex-shrink: 0;
+}
+
+/* Search Section */
+.search-section {
+  flex: 0 1 400px;
+  max-width: 400px;
+  min-width: 280px;
 }
 
 /* Brand Section */
@@ -263,6 +314,31 @@
   
   .logo-icon {
     font-size: 2.5rem;
+  }
+  
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: var(--space-sm, 0.5rem);
+  }
+  
+  .nav-link {
+    flex: 1;
+    justify-content: center;
+    font-size: var(--font-size-xs, 0.75rem);
+    padding: var(--space-xs, 0.25rem) var(--space-sm, 0.5rem);
+  }
+  
+  .nav-link span {
+    display: none;
+  }
+  
+  .search-section {
+    order: 2;
+    flex: 1;
+    max-width: 100%;
+    width: 100%;
   }
   
   .stats-section {
