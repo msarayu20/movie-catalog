@@ -43,7 +43,8 @@ export const SearchBar = ({
         if (!query || query.length < 2) return [];
         
         const searchTerm = query.toLowerCase().trim();
-        const suggestions = [];
+        // eslint-disable-next-line no-unused-vars
+        const matchedSuggestions = [];
         
         // 1. Direct title matches (highest priority)
         const titleMatches = movies.filter(movie => 
@@ -98,6 +99,7 @@ export const SearchBar = ({
     useEffect(() => {
         const intelligentSuggestions = generateIntelligentSuggestions(searchQuery);
         setSuggestions(intelligentSuggestions);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchQuery, movies]);
     
     // Show/hide suggestions based on focus and query
@@ -178,6 +180,8 @@ export const SearchBar = ({
                 setShowSuggestions(false);
                 setSelectedSuggestionIndex(-1);
                 inputRef.current?.blur();
+                break;
+            default:
                 break;
         }
     };

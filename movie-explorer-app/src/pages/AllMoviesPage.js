@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { movieService } from '../services/movieService';
-import { useDebounce, useLocalStorage } from '../hooks/useCustomHooks';
+import { useLocalStorage } from '../hooks/useCustomHooks';
 import { FilterControls } from '../components/FilterControls/FilterControls';
 import { MovieGrid } from '../components/MovieGrid/MovieGrid';
 import { MovieDetailsModal } from '../components/MovieDetailsModal/MovieDetailsModal';
 import { LoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
 import { Pagination } from '../components/Pagination/Pagination';
-import { ShareURL } from '../components/ShareURL/ShareURL';
 
 /**
  * AllMoviesPage - Complete movie browsing with filters
  */
 export const AllMoviesPage = ({ searchQuery = '' }) => {
-  const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -54,8 +52,6 @@ export const AllMoviesPage = ({ searchQuery = '' }) => {
       try {
         setLoading(true);
         await new Promise(resolve => setTimeout(resolve, 100));
-        const allMovies = movieService.getAllMovies();
-        setMovies(allMovies);
       } finally {
         setLoading(false);
       }
