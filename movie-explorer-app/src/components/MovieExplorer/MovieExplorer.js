@@ -7,6 +7,8 @@ import { MovieGrid } from '../MovieGrid/MovieGrid';
 import { MovieDetailsModal } from '../MovieDetailsModal/MovieDetailsModal';
 import { Header } from '../Header/Header';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
+import { Pagination } from '../Pagination/Pagination';
+import { ShareURL } from '../ShareURL/ShareURL';
 
 /**
  * MovieExplorer - Main Application Component
@@ -40,10 +42,14 @@ export const MovieExplorer = () => {
   // Modal state for movie details
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showShareURL, setShowShareURL] = useState(false);
   
-  // Pagination state for infinite scroll
+  // Pagination state for infinite scroll and pagination
   const [displayCount, setDisplayCount] = useState(12);
   const [hasMoreMovies, setHasMoreMovies] = useState(true);
+  const [paginationMode, setPaginationMode] = useState('infinite'); // 'infinite' or 'pages'
+  const [currentPage, setCurrentPage] = useState(1);
+  const [moviesPerPage] = useState(12);
   
   // Favorites management with localStorage persistence
   const [favorites, setFavorites] = useLocalStorage('movie-favorites', []);
@@ -66,20 +72,73 @@ export const MovieExplorer = () => {
   //   return movieService.getMovieStats();
   // }, []);
   
-  // Movies to display with pagination
+  // Movies to display based on pagination mode
   const displayedMovies = useMemo(() => {
-    return filteredMovies.slice(0, displayCount);
-  }, [filteredMovies, displayCount]);
+    if (paginationMode === 'infinite') {
+      return filteredMovies.slice(0, displayCount);
+    } else {
+      // Pagination mode
+      const startIndex = (currentPage - 1) * moviesPerPage;
+      const endIndex = startIndex + moviesPerPage;
+      return filteredMovies.slice(startIndex, endIndex);
+    }
+  }, [filteredMovies, displayCount, paginationMode, currentPage, moviesPerPage]);
+  
+  // Calculate total pages for pagination mode
+  const totalPages = useMemo(() => {
+    return Math.ceil(filteredMovies.length / moviesPerPage);
+  }, [filteredMovies.length, moviesPerPage]);
   
   // ========== INITIALIZATION ==========
   
   useEffect(() => {
-    // Initialize state from URL parameters on component mount
+    // Initialize state from URL parameters on component mount with enhanced parsing
     const initializeFromURL = () => {
-      if (params.q) setSearchQuery(params.q);
-      if (params.genre) setSelectedGenre(params.genre);
-      if (params.sort) setSortBy(params.sort);
-      if (params.view) setViewMode(params.view);
+      // Enhanced search query parsing
+      if (params.q) {
+        const decodedQuery = decodeURIComponent(params.q);
+        setSearchQuery(decodedQuery);
+      }
+      
+      // Validate and set genre
+      if (params.genre) {
+        const validGenres = movieService.getGenres();
+        const genre = params.genre.toLowerCase();
+        const matchedGenre = validGenres.find(g => g.toLowerCase() === genre);
+        setSelectedGenre(matchedGenre || 'all');
+      }
+      
+      // Validate and set sort option
+      if (params.sort) {
+        const validSorts = ['rating-desc', 'rating', 'year', 'title'];
+        if (validSorts.includes(params.sort)) {
+          setSortBy(params.sort);
+        }
+      }
+      
+      // Validate and set view mode
+      if (params.view) {
+        const validViews = ['grid', 'list'];
+        if (validViews.includes(params.view)) {
+          setViewMode(params.view);
+        }
+      }
+      
+      // Set pagination mode
+      if (params.pagination) {
+        const validModes = ['infinite', 'pages'];
+        if (validModes.includes(params.pagination)) {
+          setPaginationMode(params.pagination);
+        }
+      }
+      
+      // Set current page for pagination mode
+      if (params.page) {
+        const pageNum = parseInt(params.page, 10);
+        if (pageNum > 0) {
+          setCurrentPage(pageNum);
+        }
+      }
     };
     
     // Load initial movie data
@@ -116,16 +175,22 @@ export const MovieExplorer = () => {
       });
       
       setFilteredMovies(filtered);
-      setDisplayCount(12); // Reset pagination
-      setHasMoreMovies(filtered.length > 12);
+      
+      // Reset pagination based on mode
+      if (paginationMode === 'infinite') {
+        setDisplayCount(12);
+        setHasMoreMovies(filtered.length > 12);
+      } else {
+        setCurrentPage(1); // Reset to first page
+      }
     };
     
     updateFilteredMovies();
-  }, [debouncedSearchQuery, selectedGenre, sortBy]);
+  }, [debouncedSearchQuery, selectedGenre, sortBy, paginationMode]);
   
-  // Sync state changes with URL parameters
+  // Sync state changes with URL parameters with enhanced encoding
   useEffect(() => {
-    updateParam('q', searchQuery || null);
+    updateParam('q', searchQuery ? encodeURIComponent(searchQuery) : null);
   }, [searchQuery, updateParam]);
   
   useEffect(() => {
@@ -139,6 +204,14 @@ export const MovieExplorer = () => {
   useEffect(() => {
     updateParam('view', viewMode === 'grid' ? null : viewMode);
   }, [viewMode, updateParam]);
+  
+  useEffect(() => {
+    updateParam('pagination', paginationMode === 'infinite' ? null : paginationMode);
+  }, [paginationMode, updateParam]);
+  
+  useEffect(() => {
+    updateParam('page', (paginationMode === 'pages' && currentPage > 1) ? currentPage.toString() : null);
+  }, [currentPage, paginationMode, updateParam]);
   
   // ========== EVENT HANDLERS ==========
   
@@ -191,6 +264,45 @@ export const MovieExplorer = () => {
     setSearchQuery('');
     setSelectedGenre('all');
     setSortBy('rating-desc');
+    setCurrentPage(1);
+  }, []);
+  
+  // ========== PAGINATION HANDLERS ==========
+  
+  const handlePaginationModeChange = useCallback((mode) => {
+    setPaginationMode(mode);
+    if (mode === 'infinite') {
+      setDisplayCount(12);
+      setHasMoreMovies(filteredMovies.length > 12);
+    } else {
+      setCurrentPage(1);
+    }
+  }, [filteredMovies.length]);
+  
+  const handlePageChange = useCallback((page) => {
+    setCurrentPage(page);
+    // Scroll to top when changing pages
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+  
+  const handleNextPage = useCallback(() => {
+    if (currentPage < totalPages) {
+      handlePageChange(currentPage + 1);
+    }
+  }, [currentPage, totalPages, handlePageChange]);
+  
+  const handlePreviousPage = useCallback(() => {
+    if (currentPage > 1) {
+      handlePageChange(currentPage - 1);
+    }
+  }, [currentPage, handlePageChange]);
+  
+  const handleShowShareURL = useCallback(() => {
+    setShowShareURL(true);
+  }, []);
+  
+  const handleCloseShareURL = useCallback(() => {
+    setShowShareURL(false);
   }, []);
   
   // ========== KEYBOARD SHORTCUTS ==========
@@ -217,14 +329,14 @@ export const MovieExplorer = () => {
   
   if (error) {
     return (
-      <div className="min-h-screen bg-dark-900">
+      <div className="min-h-screen bg-[#0f1014]">
         <Header />
         <div className="flex items-center justify-center min-h-[70vh] px-8">
-          <div className="text-center max-w-md glass rounded-3xl p-8">
+          <div className="text-center max-w-md bg-[#1a1d29] rounded-2xl p-8 border border-gray-700/50">
             <h2 className="text-red-500 text-3xl font-bold mb-4">Oops! Something went wrong</h2>
             <p className="text-gray-400 text-lg mb-8 leading-relaxed">{error}</p>
             <button 
-              className="button-primary"
+              className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg font-medium transition-colors"
               onClick={() => window.location.reload()}
             >
               Try Again
@@ -239,11 +351,11 @@ export const MovieExplorer = () => {
   
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark-900">
+      <div className="min-h-screen bg-[#0f1014]">
         <Header />
         <div className="flex flex-col items-center justify-center min-h-[70vh] space-y-8">
           <LoadingSpinner />
-          <p className="text-gray-400 text-lg font-medium opacity-0 animate-fade-in">Loading amazing movies for you...</p>
+          <p className="text-gray-400 text-lg font-medium">Loading amazing movies for you...</p>
         </div>
       </div>
     );
@@ -252,22 +364,20 @@ export const MovieExplorer = () => {
   // ========== MAIN RENDER ==========
   
   return (
-    <div className="min-h-screen bg-dark-900 relative">
-      {/* Application Header */}
+    <div className="min-h-screen bg-[#0f1014]">
+      {/* Application Header with Search */}
       <Header 
         movieCount={filteredMovies.length}
         totalMovies={movies.length}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        movies={movies}
+        onMovieSelect={handleMovieSelect}
       />
       
-      {/* Search and Filter Controls */}
-      <div className="sticky top-0 z-50 glass backdrop-blur-xl border-b border-white/10 py-8 animate-slide-up">
-        <div className="max-w-7xl mx-auto px-6">
-          <SearchBar
-            value={searchQuery}
-            onChange={handleSearchChange}
-            placeholder="Search movies... (Press '/' to focus)"
-          />
-          
+      {/* Filter Controls */}
+      <div className="sticky top-0 z-40 bg-[#1a1d29] border-b border-gray-700/50 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FilterControls
             genres={availableGenres}
             selectedGenre={selectedGenre}
@@ -276,21 +386,24 @@ export const MovieExplorer = () => {
             onSortChange={handleSortChange}
             viewMode={viewMode}
             onViewModeChange={handleViewModeChange}
+            paginationMode={paginationMode}
+            onPaginationModeChange={handlePaginationModeChange}
             onClearFilters={handleClearFilters}
+            onShowShareURL={handleShowShareURL}
           />
         </div>
       </div>
       
       {/* Movie Grid */}
-      <main className="py-12 min-h-[60vh]">
-        <div className="max-w-7xl mx-auto px-6">
+      <main className="py-8 min-h-[60vh]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredMovies.length === 0 ? (
             <div className="flex items-center justify-center min-h-[50vh] px-8">
-              <div className="text-center max-w-md opacity-0 animate-fade-in">
+              <div className="text-center max-w-md">
                 <h2 className="text-3xl font-semibold text-white mb-4">No movies found</h2>
                 <p className="text-gray-400 text-lg mb-8 leading-relaxed">Try adjusting your search criteria or filters</p>
                 <button 
-                  className="glass-button px-6 py-3 rounded-xl font-medium"
+                  className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg font-medium transition-colors"
                   onClick={handleClearFilters}
                 >
                   Clear Filters
@@ -298,15 +411,27 @@ export const MovieExplorer = () => {
               </div>
             </div>
           ) : (
-            <MovieGrid
-              movies={displayedMovies}
-              viewMode={viewMode}
-              favorites={favorites}
-              onMovieSelect={handleMovieSelect}
-              onToggleFavorite={handleToggleFavorite}
-              onLoadMore={handleLoadMore}
-              hasMore={hasMoreMovies}
-            />
+            <>
+              <MovieGrid
+                movies={displayedMovies}
+                viewMode={viewMode}
+                favorites={favorites}
+                onMovieSelect={handleMovieSelect}
+                onToggleFavorite={handleToggleFavorite}
+                onLoadMore={handleLoadMore}
+                hasMore={hasMoreMovies}
+                paginationMode={paginationMode}
+              />
+              
+              {/* Pagination Component - Only for pagination mode */}
+              {paginationMode === 'pages' && filteredMovies.length > moviesPerPage && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              )}
+            </>
           )}
         </div>
       </main>
@@ -322,12 +447,17 @@ export const MovieExplorer = () => {
         />
       )}
       
-      {/* Development Debug Stats */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed bottom-4 right-4 glass rounded-lg px-3 py-2 text-xs font-mono text-gray-400 opacity-70 hover:opacity-100 transition-opacity z-50">
-          Showing {displayedMovies.length} of {filteredMovies.length} movies | Total: {movies.length} | Favorites: {favorites.length}
-        </div>
-      )}
+      {/* Share URL Modal */}
+      <ShareURL
+        searchQuery={searchQuery}
+        selectedGenre={selectedGenre}
+        sortBy={sortBy}
+        viewMode={viewMode}
+        paginationMode={paginationMode}
+        currentPage={currentPage}
+        isOpen={showShareURL}
+        onClose={handleCloseShareURL}
+      />
     </div>
   );
 };
