@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { MovieShareModal } from '../MovieShareModal/MovieShareModal';
 
 /**
  * MovieDetailsModal Component - Professional Movie Details Display
@@ -15,6 +16,8 @@ import React, { useEffect, useState } from 'react';
 export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggleFavorite }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  const [showShareModal, setShowShareModal] = useState(false);
+
 
   useEffect(() => {
     if (isOpen) {
@@ -70,11 +73,11 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/90 backdrop-blur-md"
         onClick={onClose}
       ></div>
-      
+
       {/* Modal */}
       <div className="relative w-full max-w-5xl max-h-[90vh] bg-[#1a1d29] rounded-2xl overflow-hidden shadow-2xl animate-scale-in border border-gray-700/50">
         {/* Close Button */}
@@ -99,16 +102,16 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                 className="w-full h-full object-cover"
                 onLoad={() => setImageLoaded(true)}
               />
-              
+
               {/* Overlay Gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-              
+
               {/* Year Badge */}
               <div className="absolute top-4 right-4 bg-black/80 backdrop-blur-sm px-3 py-1.5 rounded text-white text-sm font-semibold">
                 {movie.year}
               </div>
-              
-              {/* Rating and Favorite at Bottom */}
+
+              {/* Rating and Action Buttons at Bottom */}
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="flex items-center justify-between">
                   {/* Rating Badge */}
@@ -119,23 +122,40 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                     <span className="text-yellow-400 font-bold text-lg">{movie.rating.toFixed(1)}</span>
                     <span className="text-gray-300 text-sm">/10</span>
                   </div>
-                  
-                  {/* Favorite Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleFavorite();
-                    }}
-                    className={`w-11 h-11 rounded-full backdrop-blur-sm transition-all duration-200 hover:scale-110 ${
-                      isFavorite 
-                        ? 'bg-red-500 text-white' 
+
+                  {/* Action Buttons Group */}
+                  <div className="flex items-center space-x-2">
+                    {/* Share Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowShareModal(true);
+                      }}
+                      className="w-11 h-11 rounded-full bg-black/80 backdrop-blur-sm transition-all duration-200 hover:scale-110 text-gray-300 hover:text-primary-400"
+                      title="Share this movie"
+                    >
+                      <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                      </svg>
+                    </button>
+
+                    {/* Favorite Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleFavorite();
+                      }}
+                      className={`w-11 h-11 rounded-full backdrop-blur-sm transition-all duration-200 hover:scale-110 ${isFavorite
+                        ? 'bg-red-500 text-white'
                         : 'bg-black/80 text-gray-300 hover:bg-red-500 hover:text-white'
-                    }`}
-                  >
-                    <svg className="w-5 h-5 mx-auto" viewBox="0 0 24 24" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
-                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                  </button>
+                        }`}
+                      title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                    >
+                      <svg className="w-5 h-5 mx-auto" viewBox="0 0 24 24" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -143,6 +163,7 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
 
           {/* Movie Details Section */}
           <div className="lg:w-3/5 flex flex-col bg-[#1a1d29]">
+          
             {/* Header */}
             <div className="p-6 lg:p-8">
               <h1 className="text-2xl lg:text-3xl font-bold text-white mb-4 leading-tight">
@@ -162,7 +183,7 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                   ))}
                 </div>
               )}
-              
+
               {/* Meta Information */}
               <div className="flex flex-wrap items-center gap-3 text-sm text-gray-400 mb-6">
                 <span className="flex items-center space-x-1.5">
@@ -171,7 +192,7 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                   </svg>
                   <span className="text-gray-300">{movie.year}</span>
                 </span>
-                
+
                 {movie.duration && (
                   <>
                     <span className="text-gray-600">•</span>
@@ -183,7 +204,7 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                     </span>
                   </>
                 )}
-                
+
                 {movie.director && (
                   <>
                     <span className="text-gray-600">•</span>
@@ -200,11 +221,10 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`py-3 px-1 text-sm font-medium border-b-2 transition-all duration-200 capitalize ${
-                      activeTab === tab
-                        ? 'border-primary-500 text-primary-400'
-                        : 'border-transparent text-gray-400 hover:text-gray-300'
-                    }`}
+                    className={`py-3 px-1 text-sm font-medium border-b-2 transition-all duration-200 capitalize ${activeTab === tab
+                      ? 'border-primary-500 text-primary-400'
+                      : 'border-transparent text-gray-400 hover:text-gray-300'
+                      }`}
                   >
                     {tab}
                   </button>
@@ -224,7 +244,7 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                       </p>
                     </div>
                   )}
-                  
+
                   {/* Additional Info */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {movie.language && (
@@ -233,7 +253,7 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                         <p className="text-white">{movie.language}</p>
                       </div>
                     )}
-                    
+
                     {movie.country && (
                       <div>
                         <h4 className="text-sm font-medium text-gray-400 mb-2">Country</h4>
@@ -251,21 +271,21 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                       <h4 className="text-sm font-medium text-gray-400 mb-2">Release Date</h4>
                       <p className="text-white">{movie.year}</p>
                     </div>
-                    
+
                     <div>
                       <h4 className="text-sm font-medium text-gray-400 mb-2">Rating</h4>
                       <p className={`font-bold ${getRatingColor(movie.rating)}`}>
                         {movie.rating.toFixed(1)}/10 ({getRatingLabel(movie.rating)})
                       </p>
                     </div>
-                    
+
                     {movie.director && (
                       <div>
                         <h4 className="text-sm font-medium text-gray-400 mb-2">Director</h4>
                         <p className="text-white">{movie.director}</p>
                       </div>
                     )}
-                    
+
                     {movie.genre && (
                       <div>
                         <h4 className="text-sm font-medium text-gray-400 mb-2">Genres</h4>
@@ -297,6 +317,11 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
           </div>
         </div>
       </div>
+      <MovieShareModal
+        movie={movie}
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+      />
     </div>
   );
 };
