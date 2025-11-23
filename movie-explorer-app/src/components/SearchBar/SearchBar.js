@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 /**
  * SearchBar Component - Enhanced UX Version
@@ -32,6 +33,7 @@ export const SearchBar = ({
     const selectedSuggestionRef = useRef(null);
     const [isFocused, setIsFocused] = useState(false);
     const [suggestions, setSuggestions] = useState([]);
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
     const [searchQuery, setSearchQuery] = useState(value || '');
@@ -123,6 +125,19 @@ export const SearchBar = ({
         setSearchQuery(value || '');
     }, [value]);
     
+    // Update dropdown position on scroll/resize
+    useEffect(() => {
+        if (showSuggestions) {
+            updateDropdownPosition();
+            window.addEventListener('scroll', updateDropdownPosition, true);
+            window.addEventListener('resize', updateDropdownPosition);
+            return () => {
+                window.removeEventListener('scroll', updateDropdownPosition, true);
+                window.removeEventListener('resize', updateDropdownPosition);
+            };
+        }
+    }, [showSuggestions]);
+    
     // Enhanced input change handler
     const handleInputChange = (e) => {
         const newValue = e.target.value;
@@ -186,8 +201,20 @@ export const SearchBar = ({
         inputRef.current?.focus();
     };
     
+    const updateDropdownPosition = () => {
+        if (inputRef.current) {
+            const rect = inputRef.current.getBoundingClientRect();
+            setDropdownPosition({
+                top: rect.bottom + window.scrollY + 8,
+                left: rect.left + window.scrollX,
+                width: rect.width
+            });
+        }
+    };
+    
     const handleInputFocus = () => {
         setIsFocused(true);
+        updateDropdownPosition();
         if (searchQuery.length >= 2) {
             setShowSuggestions(true);
         }
@@ -282,9 +309,17 @@ export const SearchBar = ({
                 )}
             </div>
 
-            {/* Enhanced Suggestions Dropdown */}
-            {showSuggestions && suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-[#1a1d29] border border-gray-700/50 rounded-lg shadow-2xl z-50 max-h-64 overflow-y-auto">
+            {/* Enhanced Suggestions Dropdown - Using Portal */}
+            {showSuggestions && suggestions.length > 0 && createPortal(
+                <div 
+                    className="fixed bg-[#1a1d29] border border-gray-700/50 rounded-lg shadow-2xl max-h-64 overflow-y-auto" 
+                    style={{ 
+                        top: `${dropdownPosition.top}px`,
+                        left: `${dropdownPosition.left}px`,
+                        width: `${dropdownPosition.width}px`,
+                        zIndex: 9999 
+                    }}
+                >
                     <div className="p-3 border-b border-gray-700/50">
                         <div className="flex items-center justify-between">
                             <span className="text-xs text-gray-400 font-semibold uppercase tracking-wide">Suggestions</span>
@@ -351,7 +386,8 @@ export const SearchBar = ({
                             Use ↑↓ to navigate, ↵ to select, ESC to close
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

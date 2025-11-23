@@ -22,7 +22,6 @@ export const AllMoviesPage = ({ searchQuery = '' }) => {
   
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showShareURL, setShowShareURL] = useState(false);
   
   const [displayCount, setDisplayCount] = useState(12);
   const [hasMoreMovies, setHasMoreMovies] = useState(true);
@@ -142,14 +141,6 @@ export const AllMoviesPage = ({ searchQuery = '' }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
   
-  const handleShowShareURL = useCallback(() => {
-    setShowShareURL(true);
-  }, []);
-  
-  const handleCloseShareURL = useCallback(() => {
-    setShowShareURL(false);
-  }, []);
-  
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0f1014] flex items-center justify-center">
@@ -187,7 +178,6 @@ export const AllMoviesPage = ({ searchQuery = '' }) => {
             paginationMode={paginationMode}
             onPaginationModeChange={handlePaginationModeChange}
             onClearFilters={handleClearFilters}
-            onShowShareURL={handleShowShareURL}
           />
         </div>
       </div>
@@ -242,17 +232,6 @@ export const AllMoviesPage = ({ searchQuery = '' }) => {
           onToggleFavorite={() => handleToggleFavorite(selectedMovie.id)}
         />
       )}
-      
-      <ShareURL
-        searchQuery=""
-        selectedGenre={selectedGenre}
-        sortBy={sortBy}
-        viewMode={viewMode}
-        paginationMode={paginationMode}
-        currentPage={currentPage}
-        isOpen={showShareURL}
-        onClose={handleCloseShareURL}
-      />
     </div>
   );
 };

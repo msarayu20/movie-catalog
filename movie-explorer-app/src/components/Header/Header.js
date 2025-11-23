@@ -29,7 +29,7 @@ export const Header = ({
   };
   
   return (
-    <header className="app-header relative overflow-hidden">
+    <header className="app-header relative overflow-visible">
       {/* Animated Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900 opacity-90"></div>
       
@@ -79,7 +79,7 @@ export const Header = ({
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
               </svg>
-              <span>All Movies</span>
+              <span>Movies</span>
             </Link>
             <Link 
               to="/favorites" 
