@@ -5,7 +5,7 @@
   padding: var(--space-xxl, 3rem) 0 var(--space-xl, 2rem);
   background: var(--dark-gradient, linear-gradient(135deg, #1a1b23 0%, #16171d 100%));
   border-bottom: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
-  overflow: hidden;
+  overflow: visible;
   animation: slideUp 1s var(--ease-spring, cubic-bezier(0.68, -0.55, 0.265, 1.55));
   container-type: inline-size;
 }
