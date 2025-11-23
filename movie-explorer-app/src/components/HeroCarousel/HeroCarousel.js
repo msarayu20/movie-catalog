@@ -49,7 +49,7 @@ export const HeroCarousel = ({ movies, onMovieSelect, favorites, onToggleFavorit
         <img
           src={currentMovie.poster}
           alt={currentMovie.title}
-          className="w-full h-full object-cover opacity-40 blur-sm scale-110"
+          className="w-full h-full object-cover opacity-40 blur-sm"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0f1014] via-transparent to-transparent"></div>

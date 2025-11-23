@@ -14,7 +14,6 @@ import { MovieShareModal } from '../MovieShareModal/MovieShareModal';
  * This modal demonstrates professional UI/UX skills and attention to detail.
  */
 export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggleFavorite }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [showShareModal, setShowShareModal] = useState(false);
 
@@ -100,7 +99,6 @@ export const MovieDetailsModal = ({ movie, isOpen, onClose, isFavorite, onToggle
                 src={movie.poster}
                 alt={movie.title}
                 className="w-full h-full object-cover"
-                onLoad={() => setImageLoaded(true)}
               />
 
               {/* Overlay Gradient */}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { movieService } from '../services/movieService';
 import { useLocalStorage } from '../hooks/useCustomHooks';
 import { MovieGrid } from '../components/MovieGrid/MovieGrid';
