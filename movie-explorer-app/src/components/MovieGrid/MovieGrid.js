@@ -27,16 +27,17 @@ export const MovieGrid = ({
   onMovieSelect,
   onToggleFavorite,
   onLoadMore,
-  hasMore = false
+  hasMore = false,
+  paginationMode = 'infinite'
 }) => {
   const [loadMoreRef, isLoadMoreVisible] = useIntersectionObserver();
 
-  // Trigger load more when the sentinel becomes visible
+  // Trigger load more when the sentinel becomes visible (only for infinite scroll)
   React.useEffect(() => {
-    if (isLoadMoreVisible && hasMore) {
+    if (isLoadMoreVisible && hasMore && paginationMode === 'infinite') {
       onLoadMore();
     }
-  }, [isLoadMoreVisible, hasMore, onLoadMore]);
+  }, [isLoadMoreVisible, hasMore, onLoadMore, paginationMode]);
 
   if (!movies || movies.length === 0) {
     return null;
@@ -62,8 +63,8 @@ export const MovieGrid = ({
         ))}
       </div>
 
-      {/* Load More Trigger */}
-      {hasMore && (
+      {/* Load More Trigger - Only for infinite scroll mode */}
+      {hasMore && paginationMode === 'infinite' && (
         <div 
           ref={loadMoreRef}
           className="flex flex-col items-center justify-center py-12"
@@ -78,8 +79,8 @@ export const MovieGrid = ({
         </div>
       )}
 
-      {/* End of Results */}
-      {!hasMore && movies.length > 0 && (
+      {/* End of Results - Only for infinite scroll mode */}
+      {!hasMore && movies.length > 0 && paginationMode === 'infinite' && (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <div className="bg-glass backdrop-blur-sm rounded-2xl border border-white/10 shadow-glass px-6 py-4">
             <p className="text-gray-300 text-sm">You've seen all {movies.length} movies! 🎬</p>

@@ -21,7 +21,10 @@ export const FilterControls = ({
   onSortChange,
   viewMode,
   onViewModeChange,
-  onClearFilters
+  paginationMode,
+  onPaginationModeChange,
+  onClearFilters,
+  onShowShareURL
 }) => {
   const sortOptions = [
     { value: 'rating-desc', label: 'Highest Rated', icon: '⭐' },
@@ -182,6 +185,72 @@ export const FilterControls = ({
           </div>
         </div>
 
+        {/* Pagination Mode Toggle */}
+        <div className="flex items-center space-x-2">
+          <label className="flex items-center space-x-1 text-xs font-medium text-gray-400">
+            <span>📄</span>
+            <span>Pages</span>
+          </label>
+          <div className="flex bg-white/5 rounded-lg p-0.5 border border-white/20">
+            <button
+              type="button"
+              onClick={() => onPaginationModeChange('infinite')}
+              className={`flex items-center justify-center px-2 h-7 rounded transition-all duration-300 text-xs font-medium ${
+                paginationMode === 'infinite'
+                  ? 'bg-primary-500 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+              }`}
+              aria-label="Infinite scroll mode"
+              title="Infinite scroll - Load more as you scroll"
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-1"
+              >
+                <path d="M8 18L12 22L16 18"></path>
+                <path d="M8 6L12 2L16 6"></path>
+                <line x1="12" y1="2" x2="12" y2="22"></line>
+              </svg>
+              <span>∞</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onPaginationModeChange('pages')}
+              className={`flex items-center justify-center px-2 h-7 rounded transition-all duration-300 text-xs font-medium ${
+                paginationMode === 'pages'
+                  ? 'bg-primary-500 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+              }`}
+              aria-label="Pagination mode"
+              title="Pagination - Navigate with page numbers"
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mr-1"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+              </svg>
+              <span>1,2,3</span>
+            </button>
+          </div>
+        </div>
+
         {/* Clear Filters */}
         {hasActiveFilters && (
           <button
@@ -208,6 +277,32 @@ export const FilterControls = ({
             <span>Clear</span>
           </button>
         )}
+
+        {/* Share URL Button */}
+        <button
+          type="button"
+          onClick={onShowShareURL}
+          className="flex items-center space-x-1 px-3 py-1.5 bg-blue-500/20 border border-blue-500/30 
+                     rounded-lg text-blue-400 hover:text-blue-300 hover:bg-blue-500/30 
+                     transition-all duration-300 text-sm"
+          title="Share current movie selection"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+            <polyline points="16,6 12,2 8,6"></polyline>
+            <line x1="12" y1="2" x2="12" y2="15"></line>
+          </svg>
+          <span>Share</span>
+        </button>
       </div>
 
       {/* Filter Summary */}
